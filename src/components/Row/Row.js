@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "../../axios"; // Use your configured axios instance
+import axios from "../../axios";
 import "./Row.css";
 import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
@@ -7,10 +7,11 @@ import { useMyList } from "../../hooks/useMyList";
 
 const baseUrl = "https://image.tmdb.org/t/p/original";
 
-const Row = ({ title, fetchUrl, isLargeRow }) => {
+const Row = ({ title, fetchUrl, isLargeRow, isPremium }) => {
   const [movies, setMovies] = useState([]);
   const [trailerUrl, setTrailerUrl] = useState("");
   const [hoveredMovie, setHoveredMovie] = useState(null);
+  const [currentTrailerMovie, setCurrentTrailerMovie] = useState(null);
 
   const { addToMyList, removeFromMyList, isInMyList } = useMyList();
 
@@ -36,15 +37,20 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
   };
 
   const handleClick = (movie) => {
-    if (trailerUrl) {
+    if (trailerUrl && currentTrailerMovie?.id === movie.id) {
       setTrailerUrl("");
+      setCurrentTrailerMovie(null);
     } else {
       movieTrailer(movie?.name || movie?.title || "")
         .then((url) => {
           const urlParams = new URLSearchParams(new URL(url).search);
           setTrailerUrl(urlParams.get("v"));
+          setCurrentTrailerMovie(movie);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          alert("Трейлер не найден для данного фильма");
+        });
     }
   };
 
@@ -58,7 +64,7 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
   };
 
   return (
-    <div className="row">
+    <div className={`row ${isPremium ? "premium-row" : ""}`}>
       <h2>{title}</h2>
       <div className="row__posters">
         {movies.map((movie) => (
@@ -79,6 +85,18 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
             {hoveredMovie === movie.id && (
               <div className="row__poster-overlay">
                 <button
+                  className="play-trailer-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClick(movie);
+                  }}
+                  title="Play Trailer"
+                >
+                  {trailerUrl && currentTrailerMovie?.id === movie.id
+                    ? "⏸"
+                    : "▶"}
+                </button>
+                <button
                   className={`add-to-list-btn ${
                     isInMyList(movie.id) ? "in-list" : ""
                   }`}
@@ -97,7 +115,14 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
         ))}
       </div>
       {trailerUrl && (
-        <YouTube videoId={trailerUrl} opts={opts} className="youtube" />
+        <div style={{ padding: "20px", textAlign: "center" }}>
+          <div style={{ marginBottom: "10px", color: "white" }}>
+            <h3>
+              Trailer: {currentTrailerMovie?.title || currentTrailerMovie?.name}
+            </h3>
+          </div>
+          <YouTube videoId={trailerUrl} opts={opts} className="youtube" />
+        </div>
       )}
     </div>
   );

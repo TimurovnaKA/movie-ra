@@ -23,7 +23,7 @@
 
 .row__poster {
   object-fit: contain;
-  width: 200px;
+  width: 150px;
   max-height: 100px;
   transition: transform 400ms;
   cursor: pointer;
@@ -41,6 +41,33 @@
   top: 5px;
   right: 5px;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.play-trailer-btn {
+  background-color: rgba(229, 9, 20, 0.9);
+  color: white;
+  border: 2px solid rgba(229, 9, 20, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.play-trailer-btn:hover {
+  background-color: rgba(229, 9, 20, 1);
+  border-color: rgba(229, 9, 20, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
 }
 
 .add-to-list-btn {
@@ -79,4 +106,7 @@
 .youtube {
   display: block;
   margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
