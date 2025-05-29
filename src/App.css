@@ -1,6 +1,116 @@
 * {
   margin: 0;
+  box-sizing: border-box;
 }
+
 .App {
   background-color: #111;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+/* Dark Theme (default) */
+.App.dark-theme {
+  background-color: #111;
+  color: white;
+}
+
+.App.dark-theme .row {
+  color: white;
+}
+
+.App.dark-theme .nav {
+  background-color: #111;
+}
+
+/* Light Theme */
+.App.light-theme {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.App.light-theme .row {
+  color: #333;
+}
+
+.App.light-theme .row h2 {
+  color: #333;
+}
+
+.App.light-theme .nav {
+  background-color: #f5f5f5;
+}
+
+.App.light-theme .nav__black {
+  background-color: rgba(245, 245, 245, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.App.light-theme .banner {
+  color: white;
+}
+
+.App.light-theme .banner__fadeBottom {
+  background-image: linear-gradient(
+    180deg,
+    transparent,
+    rgba(245, 245, 245, 0.61),
+    #f5f5f5
+  );
+}
+
+/* Премиум контент стили */
+.premium-row {
+  position: relative;
+}
+
+.premium-row::before {
+  content: "PREMIUM";
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  z-index: 10;
+}
+
+/* Общие улучшения */
+.App {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+/* Скролбар стилизация */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #333;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.App.light-theme ::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+.App.light-theme ::-webkit-scrollbar-thumb {
+  background: #999;
+}
+
+.App.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: #666;
 }

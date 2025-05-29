@@ -8,6 +8,7 @@ import {
   useFeatureFlag,
   FEATURE_FLAGS,
 } from "./hooks/useFeatureFlags";
+import FeatureFlagDebugPanel from "./components/FeatureFlagDebugPanel";
 
 function AppContent() {
   const showPremiumContent = useFeatureFlag(FEATURE_FLAGS.PREMIUM_CONTENT);
@@ -39,6 +40,7 @@ function AppContent() {
           isPremium={true}
         />
       )}
+      {process.env.NODE_ENV === "development" && <FeatureFlagDebugPanel />}
     </div>
   );
 }
