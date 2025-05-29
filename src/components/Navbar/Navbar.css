@@ -25,3 +25,17 @@
 .nav__black {
   background-color: #111;
 }
+
+.nav__center {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+}
+
+.nav__mylist-counter {
+  background: rgba(229, 9, 20, 0.8);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}

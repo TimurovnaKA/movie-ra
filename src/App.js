@@ -2,13 +2,14 @@ import "./App.css";
 import Row from "./components/Row/Row";
 import Banner from "./components/Banner/Banner";
 import Navbar from "./components/Navbar/Navbar";
+import MyListRow from "./components/MyListRow/MyListRow";
 import requests from "./request";
 import {
   FeatureFlagsProvider,
   useFeatureFlag,
   FEATURE_FLAGS,
 } from "./hooks/useFeatureFlags";
-import FeatureFlagDebugPanel from "./components/FeatureFlagDebugPanel";
+import { MyListProvider } from "./hooks/useMyList";
 
 function AppContent() {
   const showPremiumContent = useFeatureFlag(FEATURE_FLAGS.PREMIUM_CONTENT);
@@ -18,6 +19,10 @@ function AppContent() {
     <div className={`App ${darkMode ? "dark-theme" : "light-theme"}`}>
       <Navbar />
       <Banner />
+
+      {/* My List Row */}
+      <MyListRow />
+
       <Row
         title={"NETFLIX ORIGINALS"}
         fetchUrl={requests.fetchNetflixOriginals}
@@ -32,7 +37,6 @@ function AppContent() {
       <Row title={"Fantasy Movies"} fetchUrl={requests.fetchFantasyMovies} />
       <Row title={"Romance Movies"} fetchUrl={requests.fetchRomanceMovies} />
 
-      {/* Показываем премиум контент только если флаг включен */}
       {showPremiumContent && (
         <Row
           title={"Premium Content"}
@@ -40,7 +44,6 @@ function AppContent() {
           isPremium={true}
         />
       )}
-      {process.env.NODE_ENV === "development" && <FeatureFlagDebugPanel />}
     </div>
   );
 }
@@ -48,7 +51,9 @@ function AppContent() {
 function App() {
   return (
     <FeatureFlagsProvider>
-      <AppContent />
+      <MyListProvider>
+        <AppContent />
+      </MyListProvider>
     </FeatureFlagsProvider>
   );
 }
