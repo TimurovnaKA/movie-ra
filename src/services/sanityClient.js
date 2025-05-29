@@ -1,16 +1,14 @@
 import { createClient } from "@sanity/client";
 
 export const sanityClient = createClient({
-  projectId: "your-project-id", // Замените на ваш Project ID
-  dataset: "production", // или другой dataset
-  useCdn: true, // false если вы хотите получать свежие данные
-  apiVersion: "2023-05-03",
-  token: "your-auth-token", // Добавьте токен для записи данных
+  projectId: "your-project-id",
+  dataset: "production",
+  useCdn: true,
+  apiVersion: "2023-01-01",
+  token: "your-auth-token",
 });
 
-// Утилиты для работы с Sanity
 export const sanityQueries = {
-  // Получить все фильмы
   getAllMovies: `*[_type == "movie"]{
     _id,
     title,
@@ -39,7 +37,6 @@ export const sanityQueries = {
     }
   }`,
 
-  // Получить фильмы по жанру
   getMoviesByGenre: (genre) => `*[_type == "movie" && genre match "${genre}"]{
     _id,
     title,
@@ -55,7 +52,6 @@ export const sanityQueries = {
     isPremium
   }`,
 
-  // Получить премиум контент
   getPremiumContent: `*[_type == "movie" && isPremium == true]{
     _id,
     title,
@@ -72,9 +68,7 @@ export const sanityQueries = {
   }`,
 };
 
-// Функции для работы с данными
 export const sanityService = {
-  // Получить все фильмы
   async getMovies() {
     try {
       return await sanityClient.fetch(sanityQueries.getAllMovies);
@@ -84,7 +78,6 @@ export const sanityService = {
     }
   },
 
-  // Получить фильмы по жанру
   async getMoviesByGenre(genre) {
     try {
       return await sanityClient.fetch(sanityQueries.getMoviesByGenre(genre));
@@ -94,7 +87,6 @@ export const sanityService = {
     }
   },
 
-  // Получить премиум контент
   async getPremiumContent() {
     try {
       return await sanityClient.fetch(sanityQueries.getPremiumContent);
@@ -104,7 +96,6 @@ export const sanityService = {
     }
   },
 
-  // Добавить фильм в базу данных
   async addMovie(movieData) {
     try {
       const doc = {
@@ -117,7 +108,7 @@ export const sanityService = {
         isPremium: movieData.isPremium || false,
         price: movieData.price || 0,
         duration: movieData.duration,
-        tmdbId: movieData.id, // Сохраняем ID из TMDB для связи
+        tmdbId: movieData.id,
       };
 
       return await sanityClient.create(doc);
@@ -127,7 +118,6 @@ export const sanityService = {
     }
   },
 
-  // Обновить фильм
   async updateMovie(id, updates) {
     try {
       return await sanityClient.patch(id).set(updates).commit();
@@ -137,7 +127,6 @@ export const sanityService = {
     }
   },
 
-  // Удалить фильм
   async deleteMovie(id) {
     try {
       return await sanityClient.delete(id);
@@ -147,7 +136,6 @@ export const sanityService = {
     }
   },
 
-  // Синхронизировать данные с TMDB
   async syncWithTMDB(tmdbMovies) {
     try {
       const existingMovies = await this.getMovies();
