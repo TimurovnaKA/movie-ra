@@ -3,10 +3,18 @@ import Row from "./components/Row/Row";
 import Banner from "./components/Banner/Banner";
 import Navbar from "./components/Navbar/Navbar";
 import requests from "./request";
+import {
+  FeatureFlagsProvider,
+  useFeatureFlag,
+  FEATURE_FLAGS,
+} from "./hooks/useFeatureFlags";
 
-function App() {
+function AppContent() {
+  const showPremiumContent = useFeatureFlag(FEATURE_FLAGS.PREMIUM_CONTENT);
+  const darkMode = useFeatureFlag(FEATURE_FLAGS.DARK_MODE);
+
   return (
-    <div className="App">
+    <div className={`App ${darkMode ? "dark-theme" : "light-theme"}`}>
       <Navbar />
       <Banner />
       <Row
@@ -22,7 +30,24 @@ function App() {
       />
       <Row title={"Fantasy Movies"} fetchUrl={requests.fetchFantasyMovies} />
       <Row title={"Romance Movies"} fetchUrl={requests.fetchRomanceMovies} />
+
+      {/* Показываем премиум контент только если флаг включен */}
+      {showPremiumContent && (
+        <Row
+          title={"Premium Content"}
+          fetchUrl={requests.fetchTopRated}
+          isPremium={true}
+        />
+      )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <FeatureFlagsProvider>
+      <AppContent />
+    </FeatureFlagsProvider>
   );
 }
 
