@@ -1,164 +1,72 @@
-import "./Banner.css";
-import { useState, useEffect } from "react";
-import axios from "../../axios";
-import requests from "../../request";
-import { useFeatureFlag, FEATURE_FLAGS } from "../../hooks/useFeatureFlags";
-import { getMoviePrice, isPremiumContent } from "../../services/pricingService";
-import { useMyList } from "../../hooks/useMyList";
+import { useState, createContext, useContext, useEffect } from "react";
 
-const Banner = () => {
-  const [movie, setMovie] = useState([]);
-  const [showRentModal, setShowRentModal] = useState(false);
+const MyListContext = createContext();
 
-  const showPricing = useFeatureFlag(FEATURE_FLAGS.SHOW_PRICING);
-  const enhancedBanner = useFeatureFlag(FEATURE_FLAGS.ENHANCED_BANNER);
-  const autoplayTrailer = useFeatureFlag(FEATURE_FLAGS.TRAILER_AUTOPLAY);
+// MyList Provider
+export const MyListProvider = ({ children }) => {
+  const [myList, setMyList] = useState([]);
 
-  const { addToMyList, removeFromMyList, isInMyList } = useMyList();
-
+  // Load from localStorage on mount
   useEffect(() => {
-    async function fetchData() {
-      const request = await axios.get(requests.fetchNetflixOriginals);
-      const selectedMovie =
-        request.data.results[
-          Math.floor(Math.random() * request.data.results.length)
-        ];
-      setMovie(selectedMovie);
-      return request;
+    const savedList = localStorage.getItem("netflix-my-list");
+    if (savedList) {
+      try {
+        setMyList(JSON.parse(savedList));
+      } catch (error) {
+        console.error("Error loading my list:", error);
+      }
     }
-    fetchData();
   }, []);
 
-  const handleRentClick = () => {
-    setShowRentModal(true);
+  // Save to localStorage whenever myList changes
+  useEffect(() => {
+    localStorage.setItem("netflix-my-list", JSON.stringify(myList));
+  }, [myList]);
+
+  const addToMyList = (movie) => {
+    setMyList((prevList) => {
+      // Check if movie already exists
+      if (prevList.some((item) => item.id === movie.id)) {
+        return prevList;
+      }
+      return [...prevList, { ...movie, addedAt: Date.now() }];
+    });
   };
 
-  const handlePurchase = (type) => {
-    const price = getMoviePrice(movie.id, type);
-    alert(
-      `Purchasing ${movie?.title || movie?.name} for ${price.price} сом (${
-        price.duration
-      })`
-    );
-    setShowRentModal(false);
+  const removeFromMyList = (movieId) => {
+    setMyList((prevList) => prevList.filter((item) => item.id !== movieId));
   };
 
-  const handleMyListClick = () => {
-    if (isInMyList(movie.id)) {
-      removeFromMyList(movie.id);
-    } else {
-      addToMyList(movie);
-    }
+  const isInMyList = (movieId) => {
+    return myList.some((item) => item.id === movieId);
   };
 
-  const isPremium = isPremiumContent(movie);
-  const inMyList = isInMyList(movie.id);
+  const clearMyList = () => {
+    setMyList([]);
+  };
 
   return (
-    <>
-      <header
-        className={`banner ${enhancedBanner ? "banner--enhanced" : ""}`}
-        style={{
-          backgroundSize: "cover",
-          backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
-          backgroundPosition: "50% 10%",
-        }}
-      >
-        <div className="banner__contents">
-          <h1 className="banner__title">
-            {movie?.title || movie.name || movie?.original_name}
-            {enhancedBanner && isPremium && (
-              <span className="banner__premium-badge">PREMIUM</span>
-            )}
-          </h1>
-          <div className="banner__buttons">
-            <button className="banner__button banner__button--play">
-              ▶ Play
-            </button>
-            <button
-              className={`banner__button banner__button--mylist ${
-                inMyList ? "in-list" : ""
-              }`}
-              onClick={handleMyListClick}
-            >
-              {inMyList ? "✓ In My List" : "+ My List"}
-            </button>
-
-            {showPricing && (
-              <>
-                <button
-                  className="banner__button banner__button--rent"
-                  onClick={handleRentClick}
-                >
-                  Rent {getMoviePrice(movie.id, "rent").price} сом
-                </button>
-                <button
-                  className="banner__button banner__button--buy"
-                  onClick={() => handlePurchase("buy")}
-                >
-                  Buy {getMoviePrice(movie.id, "buy").price} сом
-                </button>
-              </>
-            )}
-          </div>
-          <h1 className="banner__description">{movie?.overview}</h1>
-
-          {enhancedBanner && (
-            <div className="banner__metadata">
-              <span className="banner__rating">
-                ★ {movie?.vote_average?.toFixed(1)}
-              </span>
-              <span className="banner__year">
-                {new Date(
-                  movie?.release_date || movie?.first_air_date
-                ).getFullYear()}
-              </span>
-              {isPremium && (
-                <span className="banner__premium-tag">PREMIUM</span>
-              )}
-            </div>
-          )}
-        </div>
-        <div className="banner__fadeBottom" />
-      </header>
-
-      {showRentModal && (
-        <div className="modal-overlay" onClick={() => setShowRentModal(false)}>
-          <div className="rental-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Choose Rental Option</h3>
-            <div className="rental-options">
-              <button
-                className="rental-option"
-                onClick={() => handlePurchase("rent")}
-              >
-                <div>Rent</div>
-                <div>{getMoviePrice(movie.id, "rent").price} сом</div>
-                <div className="rental-duration">
-                  {getMoviePrice(movie.id, "rent").duration}
-                </div>
-              </button>
-              <button
-                className="rental-option"
-                onClick={() => handlePurchase("buy")}
-              >
-                <div>Buy</div>
-                <div>{getMoviePrice(movie.id, "buy").price} сом</div>
-                <div className="rental-duration">
-                  {getMoviePrice(movie.id, "buy").duration}
-                </div>
-              </button>
-            </div>
-            <button
-              className="close-modal"
-              onClick={() => setShowRentModal(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+    <MyListContext.Provider
+      value={{
+        myList,
+        addToMyList,
+        removeFromMyList,
+        isInMyList,
+        clearMyList,
+      }}
+    >
+      {children}
+    </MyListContext.Provider>
   );
 };
 
-export default Banner;
+// Hook to use MyList
+export const useMyList = () => {
+  const context = useContext(MyListContext);
+  if (!context) {
+    throw new Error("useMyList must be used within MyListProvider");
+  }
+  return context;
+};
+
+export default { MyListProvider, useMyList };

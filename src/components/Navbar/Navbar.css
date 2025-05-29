@@ -16,26 +16,26 @@
   left: 20px;
   object-fit: contain;
 }
+.nav__right {
+  position: fixed;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.nav__my-list-counter {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
 .nav__avatar {
   width: 30px;
   object-fit: contain;
-  position: fixed;
-  right: 20px;
 }
 .nav__black {
   background-color: #111;
-}
-
-.nav__center {
-  display: flex;
-  align-items: center;
-  color: white;
-  font-size: 14px;
-}
-
-.nav__mylist-counter {
-  background: rgba(229, 9, 20, 0.8);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-weight: 500;
 }

@@ -2,57 +2,25 @@
   color: white;
   object-fit: contain;
   height: 450px;
-  position: relative;
 }
-
-.banner--enhanced {
-  height: 500px;
-}
-
 .banner__contents {
   margin-left: 30px;
   padding-top: 140px;
   height: 190px;
-  position: relative;
-  z-index: 2;
 }
-
 .banner__title {
   font-size: 3rem;
   font-weight: 800;
   padding-bottom: 0.3rem;
-  display: flex;
-  align-items: center;
-  gap: 15px;
 }
-
-.banner__premium-badge {
-  background: linear-gradient(45deg, #ffd700, #ffed4e);
-  color: #000;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
-}
-
 .banner__description {
   width: 45rem;
   line-height: 1.3;
   padding-top: 1rem;
-  font-size: 16px;
+  font-size: 18px;
   max-width: 360px;
   height: 80px;
 }
-
-.banner__buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
 .banner__button {
   cursor: pointer;
   color: #fff;
@@ -60,95 +28,45 @@
   border: none;
   font-weight: 700;
   border-radius: 10px;
-  padding: 12px 24px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  min-width: 100px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-right: 1rem;
+  padding-top: 0.5rem;
+  background-color: rgba(51, 51, 51, 0.5);
+  padding-bottom: 0.5rem;
 }
-
-.banner__button--play {
-  background-color: #fff;
+.banner__button:hover {
   color: #000;
+  background-color: #e6e6e6;
+  transition: all 0.2s;
 }
-
-.banner__button--play:hover {
-  background-color: rgba(255, 255, 255, 0.8);
+.banner__button--in-list {
+  background-color: rgba(0, 150, 0, 0.7);
 }
-
-.banner__button:not(.banner__button--play) {
-  background-color: rgba(51, 51, 51, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.banner__button--in-list:hover {
+  background-color: rgba(0, 100, 0, 0.9);
+  color: #fff;
 }
-
-.banner__button:not(.banner__button--play):hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-2px);
-}
-
-.banner__button--rent {
-  background-color: rgba(229, 9, 20, 0.8);
-}
-
-.banner__button--rent:hover {
-  background-color: rgba(229, 9, 20, 1);
-}
-
-.banner__button--buy {
-  background-color: rgba(0, 113, 235, 0.8);
-}
-
-.banner__button--buy:hover {
-  background-color: rgba(0, 113, 235, 1);
-}
-
-.banner__metadata {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  margin-top: 15px;
-  font-size: 14px;
-}
-
-.banner__rating {
-  color: #ffd700;
-  font-weight: 600;
-}
-
-.banner__year {
-  color: #ccc;
-}
-
-.banner__premium-tag {
-  background: linear-gradient(45deg, #e50914, #ff6b6b);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
 .banner__fadeBottom {
-  height: 7.5rem;
+  height: 16.5rem;
   background-image: linear-gradient(
     180deg,
     transparent,
     rgba(37, 37, 37, 0.61),
     #111
   );
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+}
+.banner__description {
+  font-size: 16px;
 }
 
-/* Modal Styles */
+/* Modal styles */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
@@ -158,187 +76,55 @@
 
 .rental-modal {
   background-color: #222;
-  border-radius: 15px;
   padding: 30px;
-  max-width: 500px;
+  border-radius: 10px;
+  max-width: 400px;
   width: 90%;
   color: white;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .rental-modal h3 {
-  font-size: 24px;
   margin-bottom: 20px;
   text-align: center;
-  color: #fff;
 }
 
 .rental-options {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
 .rental-option {
   flex: 1;
+  padding: 15px;
   background-color: #333;
-  border: 2px solid #555;
-  border-radius: 12px;
-  padding: 20px;
+  border: none;
+  border-radius: 5px;
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
   text-align: center;
 }
 
 .rental-option:hover {
   background-color: #444;
-  border-color: #e50914;
-  transform: translateY(-2px);
-}
-
-.rental-option div:first-child {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.rental-option div:nth-child(2) {
-  font-size: 20px;
-  color: #e50914;
-  font-weight: 600;
-  margin-bottom: 5px;
 }
 
 .rental-duration {
   font-size: 12px;
-  color: #ccc;
-  text-transform: uppercase;
+  opacity: 0.7;
+  margin-top: 5px;
 }
 
 .close-modal {
   width: 100%;
+  padding: 10px;
   background-color: #666;
-  color: white;
   border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 16px;
+  border-radius: 5px;
+  color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .close-modal:hover {
   background-color: #777;
-}
-
-/* Trailer Styles */
-.trailer-section {
-  background-color: #111;
-  padding: 40px 20px;
-  margin-top: -1px; /* Убираем зазор между banner и trailer */
-}
-
-.trailer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.trailer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  color: white;
-}
-
-.trailer-header h3 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.trailer-close-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.trailer-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: scale(1.1);
-}
-
-.trailer-player {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.trailer-player iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .banner__title {
-    font-size: 2rem;
-  }
-
-  .banner__description {
-    max-width: 280px;
-    width: 100%;
-  }
-
-  .banner__buttons {
-    flex-wrap: wrap;
-  }
-
-  .banner__button {
-    min-width: 80px;
-    padding: 10px 16px;
-    font-size: 12px;
-  }
-
-  .rental-options {
-    flex-direction: column;
-  }
-
-  .rental-modal {
-    margin: 20px;
-  }
-
-  /* Trailer responsive */
-  .trailer-section {
-    padding: 20px 10px;
-  }
-
-  .trailer-header h3 {
-    font-size: 18px;
-  }
-
-  .trailer-close-btn {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
-  }
 }

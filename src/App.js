@@ -19,10 +19,7 @@ function AppContent() {
     <div className={`App ${darkMode ? "dark-theme" : "light-theme"}`}>
       <Navbar />
       <Banner />
-
-      {/* My List Row */}
       <MyListRow />
-
       <Row
         title={"NETFLIX ORIGINALS"}
         fetchUrl={requests.fetchNetflixOriginals}
@@ -37,6 +34,7 @@ function AppContent() {
       <Row title={"Fantasy Movies"} fetchUrl={requests.fetchFantasyMovies} />
       <Row title={"Romance Movies"} fetchUrl={requests.fetchRomanceMovies} />
 
+      {/* Показываем премиум контент только если флаг включен */}
       {showPremiumContent && (
         <Row
           title={"Premium Content"}
