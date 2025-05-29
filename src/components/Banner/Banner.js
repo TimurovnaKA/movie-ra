@@ -133,21 +133,21 @@ const Banner = () => {
                 onClick={() => handlePurchase("rent")}
               >
                 <div>Rent</div>
-                <div>{getMoviePrice(movie.id, "rent").price} сом</div>
+                <div>{getMoviePrice(movie.id, "rent").price} $</div>
                 <div className="rental-duration">
                   {getMoviePrice(movie.id, "rent").duration}
                 </div>
               </button>
-              <button
+              {/* <button
                 className="rental-option"
                 onClick={() => handlePurchase("buy")}
               >
                 <div>Buy</div>
-                <div>{getMoviePrice(movie.id, "buy").price} сом</div>
+                <div>{getMoviePrice(movie.id, "buy").price} $</div>
                 <div className="rental-duration">
                   {getMoviePrice(movie.id, "buy").duration}
                 </div>
-              </button>
+              </button> */}
             </div>
             <button
               className="close-modal"
