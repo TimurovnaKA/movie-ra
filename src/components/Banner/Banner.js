@@ -5,10 +5,13 @@ import requests from "../../request";
 import { useFeatureFlag, FEATURE_FLAGS } from "../../hooks/useFeatureFlags";
 import { getMoviePrice, isPremiumContent } from "../../services/pricingService";
 import { useMyList } from "../../hooks/useMyList";
+import YouTube from "react-youtube";
+import movieTrailer from "movie-trailer";
 
 const Banner = () => {
   const [movie, setMovie] = useState([]);
   const [showRentModal, setShowRentModal] = useState(false);
+  const [trailerUrl, setTrailerUrl] = useState("");
 
   const showPricing = useFeatureFlag(FEATURE_FLAGS.SHOW_PRICING);
   const enhancedBanner = useFeatureFlag(FEATURE_FLAGS.ENHANCED_BANNER);
@@ -28,6 +31,30 @@ const Banner = () => {
     }
     fetchData();
   }, []);
+
+  const opts = {
+    height: "390",
+    width: "740",
+    playerVars: {
+      autoplay: 1,
+    },
+  };
+
+  const handlePlayClick = () => {
+    if (trailerUrl) {
+      setTrailerUrl("");
+    } else {
+      movieTrailer(movie?.name || movie?.title || "")
+        .then((url) => {
+          const urlParams = new URLSearchParams(new URL(url).search);
+          setTrailerUrl(urlParams.get("v"));
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Трейлер не найден для данного фильма");
+        });
+    }
+  };
 
   const handleRentClick = () => {
     setShowRentModal(true);
@@ -71,8 +98,11 @@ const Banner = () => {
             )}
           </h1>
           <div className="banner__buttons">
-            <button className="banner__button banner__button--play">
-              Play
+            <button
+              className="banner__button banner__button--play"
+              onClick={handlePlayClick}
+            >
+              {trailerUrl ? "Close Trailer" : "▶ Play"}
             </button>
             <button
               className={`banner__button ${
@@ -122,6 +152,13 @@ const Banner = () => {
         <div className="banner__fadeBottom" />
       </header>
 
+      {/* YouTube Trailer */}
+      {trailerUrl && (
+        <div style={{ padding: "20px", textAlign: "center" }}>
+          <YouTube videoId={trailerUrl} opts={opts} className="youtube" />
+        </div>
+      )}
+
       {/* Rent Modal */}
       {showRentModal && (
         <div className="modal-overlay" onClick={() => setShowRentModal(false)}>
@@ -133,21 +170,21 @@ const Banner = () => {
                 onClick={() => handlePurchase("rent")}
               >
                 <div>Rent</div>
-                <div>{getMoviePrice(movie.id, "rent").price} $</div>
+                <div>{getMoviePrice(movie.id, "rent").price} сом</div>
                 <div className="rental-duration">
                   {getMoviePrice(movie.id, "rent").duration}
                 </div>
               </button>
-              {/* <button
+              <button
                 className="rental-option"
                 onClick={() => handlePurchase("buy")}
               >
                 <div>Buy</div>
-                <div>{getMoviePrice(movie.id, "buy").price} $</div>
+                <div>{getMoviePrice(movie.id, "buy").price} сом</div>
                 <div className="rental-duration">
                   {getMoviePrice(movie.id, "buy").duration}
                 </div>
-              </button> */}
+              </button>
             </div>
             <button
               className="close-modal"
