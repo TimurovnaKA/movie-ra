@@ -71,27 +71,37 @@
   color: #fff;
 }
 
+/* Улучшенные стили для кнопок Rent и Buy - теперь они похожи */
 .banner__button--rent {
   background-color: rgba(229, 9, 20, 0.8);
   border: 2px solid rgba(229, 9, 20, 0.8);
+  color: white;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .banner__button--rent:hover {
   background-color: rgba(229, 9, 20, 1);
+  border-color: rgba(229, 9, 20, 1);
   color: white;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
 }
 
 .banner__button--buy {
   background-color: rgba(255, 193, 7, 0.8);
-  color: #000;
   border: 2px solid rgba(255, 193, 7, 0.8);
+  color: #000;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 .banner__button--buy:hover {
   background-color: rgba(255, 193, 7, 1);
+  border-color: rgba(255, 193, 7, 1);
   color: #000;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
 }
 
 .banner__fadeBottom {
@@ -135,7 +145,7 @@
   margin-left: 10px;
 }
 
-/* Modal styles */
+/* Улучшенные модальные окна */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -147,6 +157,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
 }
 
 .rental-modal {
@@ -156,11 +167,15 @@
   max-width: 400px;
   width: 90%;
   color: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333;
 }
 
 .rental-modal h3 {
   margin-bottom: 20px;
   text-align: center;
+  font-size: 24px;
+  color: #fff;
 }
 
 .rental-options {
@@ -179,11 +194,11 @@
   cursor: pointer;
   text-align: center;
   transition: all 0.3s ease;
+  font-weight: 600;
 }
 
 .rental-option:hover {
   background-color: #444;
-  border-color: #e50914;
   transform: translateY(-2px);
 }
 
@@ -193,6 +208,8 @@
 
 .rental-option:first-child:hover {
   background-color: rgba(229, 9, 20, 0.2);
+  border-color: #e50914;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
 }
 
 .rental-option:last-child {
@@ -201,6 +218,8 @@
 
 .rental-option:last-child:hover {
   background-color: rgba(255, 193, 7, 0.2);
+  border-color: #ffc107;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
 }
 
 .rental-duration {
@@ -211,13 +230,15 @@
 
 .close-modal {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #666;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .close-modal:hover {
@@ -225,11 +246,48 @@
   transform: translateY(-1px);
 }
 
-/* YouTube trailer styles */
+/* Улучшенные стили для YouTube трейлеров */
+.trailer-container {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8),
+    rgba(20, 20, 20, 0.9)
+  );
+  margin: 20px 0;
+  border-radius: 12px;
+}
+
+.trailer-title {
+  color: white;
+  margin-bottom: 15px;
+  font-size: 24px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .youtube {
   display: block;
   margin: 0 auto;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Анимация для появления трейлера */
+.trailer-container {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

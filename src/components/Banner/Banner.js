@@ -12,10 +12,10 @@ const Banner = () => {
   const [movie, setMovie] = useState([]);
   const [showRentModal, setShowRentModal] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState("");
+  const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
 
   const showPricing = useFeatureFlag(FEATURE_FLAGS.SHOW_PRICING);
   const enhancedBanner = useFeatureFlag(FEATURE_FLAGS.ENHANCED_BANNER);
-  const autoplayTrailer = useFeatureFlag(FEATURE_FLAGS.TRAILER_AUTOPLAY);
 
   const { addToMyList, removeFromMyList, isInMyList } = useMyList();
 
@@ -34,24 +34,46 @@ const Banner = () => {
 
   const opts = {
     height: "390",
-    width: "740",
+    width: "100%",
     playerVars: {
       autoplay: 1,
+      controls: 1,
+      modestbranding: 1,
+      rel: 0,
     },
   };
 
   const handlePlayClick = () => {
     if (trailerUrl) {
+      // Закрываем трейлер
       setTrailerUrl("");
     } else {
-      movieTrailer(movie?.name || movie?.title || "")
+      // Открываем трейлер
+      setIsLoadingTrailer(true);
+      const movieName = movie?.name || movie?.title || movie?.original_name;
+
+      movieTrailer(movieName)
         .then((url) => {
-          const urlParams = new URLSearchParams(new URL(url).search);
-          setTrailerUrl(urlParams.get("v"));
+          if (url) {
+            const urlParams = new URLSearchParams(new URL(url).search);
+            const videoId = urlParams.get("v");
+            if (videoId) {
+              setTrailerUrl(videoId);
+            } else {
+              throw new Error("Video ID not found");
+            }
+          } else {
+            throw new Error("No trailer URL found");
+          }
         })
         .catch((err) => {
-          console.log(err);
-          alert("Трейлер не найден для данного фильма");
+          console.log("Trailer search error:", err);
+          alert(
+            `Трейлер для "${movieName}" не найден. Попробуйте другой фильм.`
+          );
+        })
+        .finally(() => {
+          setIsLoadingTrailer(false);
         });
     }
   };
@@ -62,10 +84,9 @@ const Banner = () => {
 
   const handlePurchase = (type) => {
     const price = getMoviePrice(movie.id, type);
+    const movieTitle = movie?.title || movie?.name || movie?.original_name;
     alert(
-      `Purchasing ${movie?.title || movie?.name} for ${price.price} сом (${
-        price.duration
-      })`
+      `Purchase "${movieTitle}" for ${price.price} $ (${price.duration})\n\nThanks for your purchase! 🎬`
     );
     setShowRentModal(false);
   };
@@ -98,35 +119,39 @@ const Banner = () => {
             )}
           </h1>
           <div className="banner__buttons">
-            <button
+            {/* <button
               className="banner__button banner__button--play"
               onClick={handlePlayClick}
+              disabled={isLoadingTrailer}
             >
-              {trailerUrl ? "Close Trailer" : "▶ Play"}
-            </button>
+              {isLoadingTrailer
+                ? "⏳ Загрузка..."
+                : trailerUrl
+                ? "⏹ Закрыть трейлер"
+                : "▶ Смотреть трейлер"}
+            </button> */}
             <button
               className={`banner__button ${
                 isInMyList(movie.id) ? "banner__button--in-list" : ""
               }`}
               onClick={handleMyListClick}
             >
-              {isInMyList(movie.id) ? "✓ In My List" : "+ My List"}
+              {isInMyList(movie.id) ? "✓ On my list" : "+ My list"}
             </button>
 
-            {/* Показываем кнопки покупки/аренды если флаг включен */}
             {showPricing && (
               <>
                 <button
                   className="banner__button banner__button--rent"
                   onClick={handleRentClick}
                 >
-                  Rent {getMoviePrice(movie.id, "rent").price} сом
+                  🎬 Rent {getMoviePrice(movie.id, "rent").price} $
                 </button>
                 <button
                   className="banner__button banner__button--buy"
-                  onClick={() => handlePurchase("buy")}
+                  onClick={handleRentClick}
                 >
-                  Buy {getMoviePrice(movie.id, "buy").price} сом
+                  💎 Buy {getMoviePrice(movie.id, "buy").price} $
                 </button>
               </>
             )}
@@ -136,7 +161,7 @@ const Banner = () => {
           {enhancedBanner && (
             <div className="banner__metadata">
               <span className="banner__rating">
-                ★ {movie?.vote_average?.toFixed(1)}
+                ⭐ {movie?.vote_average?.toFixed(1)}
               </span>
               <span className="banner__year">
                 {new Date(
@@ -152,37 +177,60 @@ const Banner = () => {
         <div className="banner__fadeBottom" />
       </header>
 
-      {/* YouTube Trailer */}
-      {trailerUrl && (
-        <div style={{ padding: "20px", textAlign: "center" }}>
-          <YouTube videoId={trailerUrl} opts={opts} className="youtube" />
+      {/* {trailerUrl && (
+        <div className="trailer-container">
+          <div className="trailer-title">
+            🎬 Play {movie?.title || movie?.name || movie?.original_name}
+          </div>
+          <YouTube
+            videoId={trailerUrl}
+            opts={opts}
+            className="youtube"
+            onError={(e) => {
+              console.error("YouTube player error:", e);
+              alert("Ошибка при загрузке трейлера. Попробуйте еще раз.");
+              setTrailerUrl("");
+            }}
+          />
         </div>
-      )}
+      )} */}
 
-      {/* Rent Modal */}
       {showRentModal && (
         <div className="modal-overlay" onClick={() => setShowRentModal(false)}>
           <div className="rental-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Choose Rental Option</h3>
+            <h3>🎬 Выберите вариант</h3>
+            <p
+              style={{
+                textAlign: "center",
+                marginBottom: "20px",
+                opacity: 0.8,
+              }}
+            >
+              {movie?.title || movie?.name || movie?.original_name}
+            </p>
             <div className="rental-options">
               <button
                 className="rental-option"
                 onClick={() => handlePurchase("rent")}
               >
-                <div>Rent</div>
-                <div>{getMoviePrice(movie.id, "rent").price} сом</div>
+                <div>🎬 Rent</div>
+                <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  {getMoviePrice(movie.id, "rent").price} $
+                </div>
                 <div className="rental-duration">
                   {getMoviePrice(movie.id, "rent").duration}
                 </div>
               </button>
               <button
                 className="rental-option"
-                onClick={() => handlePurchase("buy")}
+                onClick={() => handlePurchase("rent")}
               >
-                <div>Buy</div>
-                <div>{getMoviePrice(movie.id, "buy").price} сом</div>
+                <div>🎬 Buy</div>
+                <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  {getMoviePrice(movie.id, "rent").price} $
+                </div>
                 <div className="rental-duration">
-                  {getMoviePrice(movie.id, "buy").duration}
+                  {getMoviePrice(movie.id, "rent").duration}
                 </div>
               </button>
             </div>
@@ -190,7 +238,7 @@ const Banner = () => {
               className="close-modal"
               onClick={() => setShowRentModal(false)}
             >
-              Close
+              ❌ Close
             </button>
           </div>
         </div>
