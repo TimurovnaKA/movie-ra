@@ -11,7 +11,6 @@ export const FEATURE_FLAGS = {
   USER_RECOMMENDATIONS: "user_recommendations",
 };
 
-// Feature Flags Provider
 export const FeatureFlagsProvider = ({ children }) => {
   const [flags, setFlags] = useState({
     [FEATURE_FLAGS.SHOW_PRICING]: true,
@@ -36,7 +35,6 @@ export const FeatureFlagsProvider = ({ children }) => {
   );
 };
 
-// Hook to use feature flags
 export const useFeatureFlag = (flagName) => {
   const context = useContext(FeatureFlagsContext);
   if (!context) {
