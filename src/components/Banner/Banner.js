@@ -167,7 +167,7 @@ const Banner = () => {
       {showRentModal && (
         <div className="modal-overlay" onClick={() => setShowRentModal(false)}>
           <div className="rental-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>🎬 Выберите вариант</h3>
+            <h3>🎬 Choose an option</h3>
             <p
               style={{
                 textAlign: "center",
