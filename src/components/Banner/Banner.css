@@ -71,7 +71,6 @@
   color: #fff;
 }
 
-/* Улучшенные стили для кнопок Rent и Buy - теперь они похожи */
 .banner__button--rent {
   background-color: rgba(229, 9, 20, 0.8);
   border: 2px solid rgba(229, 9, 20, 0.8);
@@ -109,7 +108,7 @@
   background-image: linear-gradient(
     180deg,
     transparent,
-    rgba(37, 37, 37, 0.61),
+    rgba(37, 37, 37, 0.1),
     #111
   );
 }
@@ -145,7 +144,6 @@
   margin-left: 10px;
 }
 
-/* Улучшенные модальные окна */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -246,7 +244,6 @@
   transform: translateY(-1px);
 }
 
-/* Улучшенные стили для YouTube трейлеров */
 .trailer-container {
   padding: 20px;
   text-align: center;
@@ -276,7 +273,6 @@
   border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Анимация для появления трейлера */
 .trailer-container {
   animation: fadeInUp 0.5s ease-out;
 }

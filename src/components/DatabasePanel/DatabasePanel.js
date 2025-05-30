@@ -63,9 +63,7 @@ const DatabasePanel = ({ isOpen, onClose }) => {
   };
 
   const handleSyncWithTMDB = async () => {
-    // Здесь можно интегрировать с существующими данными TMDB
     alert("Синхронизация с TMDB запущена!");
-    // Логика синхронизации...
   };
 
   if (!isOpen) return null;
@@ -253,7 +251,6 @@ const DatabasePanel = ({ isOpen, onClose }) => {
                             "Are you sure you want to clear all movies?"
                           )
                         ) {
-                          // Implement bulk delete
                           alert("Bulk delete functionality");
                         }
                       }}

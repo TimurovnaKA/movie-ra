@@ -112,7 +112,6 @@
   cursor: not-allowed;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .add-movie {
     margin: 1rem;

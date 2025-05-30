@@ -34,7 +34,6 @@ function AppContent() {
       <Row title={"Fantasy Movies"} fetchUrl={requests.fetchFantasyMovies} />
       <Row title={"Romance Movies"} fetchUrl={requests.fetchRomanceMovies} />
 
-      {/* Показываем премиум контент только если флаг включен */}
       {showPremiumContent && (
         <Row
           title={"Premium Content"}

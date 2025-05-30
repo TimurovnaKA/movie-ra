@@ -45,5 +45,5 @@ export const getMoviePrice = (movieId, type = "rent") => {
 };
 
 export const isPremiumContent = (movie) => {
-  return movie.vote_average > 8.0 || movie.genre_ids?.includes(99); // 99 - документальные
+  return movie.vote_average > 8.0 || movie.genre_ids?.includes(99);
 };

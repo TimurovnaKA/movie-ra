@@ -45,10 +45,8 @@ const Banner = () => {
 
   const handlePlayClick = () => {
     if (trailerUrl) {
-      // Закрываем трейлер
       setTrailerUrl("");
     } else {
-      // Открываем трейлер
       setIsLoadingTrailer(true);
       const movieName = movie?.name || movie?.title || movie?.original_name;
 
@@ -119,17 +117,6 @@ const Banner = () => {
             )}
           </h1>
           <div className="banner__buttons">
-            {/* <button
-              className="banner__button banner__button--play"
-              onClick={handlePlayClick}
-              disabled={isLoadingTrailer}
-            >
-              {isLoadingTrailer
-                ? "⏳ Загрузка..."
-                : trailerUrl
-                ? "⏹ Закрыть трейлер"
-                : "▶ Смотреть трейлер"}
-            </button> */}
             <button
               className={`banner__button ${
                 isInMyList(movie.id) ? "banner__button--in-list" : ""
@@ -176,24 +163,6 @@ const Banner = () => {
         </div>
         <div className="banner__fadeBottom" />
       </header>
-
-      {/* {trailerUrl && (
-        <div className="trailer-container">
-          <div className="trailer-title">
-            🎬 Play {movie?.title || movie?.name || movie?.original_name}
-          </div>
-          <YouTube
-            videoId={trailerUrl}
-            opts={opts}
-            className="youtube"
-            onError={(e) => {
-              console.error("YouTube player error:", e);
-              alert("Ошибка при загрузке трейлера. Попробуйте еще раз.");
-              setTrailerUrl("");
-            }}
-          />
-        </div>
-      )} */}
 
       {showRentModal && (
         <div className="modal-overlay" onClick={() => setShowRentModal(false)}>
