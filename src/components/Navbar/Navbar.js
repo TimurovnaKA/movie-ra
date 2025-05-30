@@ -37,11 +37,11 @@ const Navbar = () => {
           >
             🗄️ DB
           </button>
-          <img
+          {/* <img
             className="nav__avatar"
             src="./netflix-avatar.png"
             alt="netflix-avatar"
-          />
+          /> */}
         </div>
       </div>
 
